@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>declare.js example</title>
+  <style type="text/css">
+  * {
+    margin: 0;
+    padding: 0
+  }
+  </style>
+  <script src="declare.js"></script>
+</head>
+
+<body>
+  <script type="text/javascript">
+  var nativeLog = console.log;
+  var aspectBeforeLog = function() {
+    alert(arguments[0])
+  };
+  console.log = function() {
+    aspectBeforeLog.apply(null, arguments);
+    nativeLog.apply(this, arguments);
+  };
+
+  var X = declare('X', null, {
+    constructor: function() {
+      this.name = 'X';
+      console.log('X');
+    },
+    protoName: 'X',
+    protoFn: function() {
+      console.log('X fn');
+    }
+  });
+  var F = declare('F', [X], {
+    constructor: function() {
+      this.name = 'F';
+      console.log('F');
+    },
+    protoName: 'F',
+    protoFn: function() {
+      this.inherited(arguments);
+      console.log('F fn');
+    },
+    protoF2: function() {
+      console.log('F protoF2');
+    }
+  });
+  console.time('e')
+  var E = declare('E', [X], {
+    constructor: function() {
+      this.name = 'E';
+      console.log('E');
+    },
+    protoName: 'E'
+  });
+  console.timeEnd('e')
+  console.time('d')
+  var D = declare('D', [X], {
+    constructor: function() {
+      this.name = 'D';
+      console.log('D');
+    },
+    protoName: 'D'
+  });
+  console.timeEnd('d')
+  console.time('c')
+  var C = declare('C', [D, F], {
+    constructor: function() {
+      this.name = 'C';
+      console.log('C');
+    },
+    protoName: 'C'
+  });
+  console.timeEnd('c')
+  console.time('b')
+  var B = declare('B', [E, D], {
+    constructor: function() {
+      this.name = 'B';
+      console.log('B');
+    },
+    protoName: 'B',
+    protoFn: function() {
+      this.inherited(arguments);
+      console.log('B fn');
+    }
+  });
+  console.timeEnd('b')
+  console.time('a')
+  var A = declare('A', [B, C], {
+    constructor: function() {
+      this.name = 'A';
+      console.log('A');
+    },
+    protoName: 'A',
+    protoF2: function() {
+      this.inherited(arguments);
+      console.log('A protoF2');
+    }
+  });
+  console.timeEnd('a');
+
+  var x = X();
+  console.log('============ x instanced ============')
+  var f = F();
+  console.log('============ f instanced ============')
+  var d = D();
+  console.log('============ d instanced ============')
+  var e = E();
+  console.log('============ e instanced ============')
+  var c = C();
+  console.log('============ c instanced ============')
+  var b = B();
+  console.log('============ b instanced ============')
+  var a = A();
+  console.log('============ a instanced ============')
+  </script>
+</body>
+
+</html>
