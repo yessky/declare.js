@@ -9,7 +9,7 @@
 	var cmeta = 'clsmeta';
 
 	function err(msg, cls) {
-		throw new Error('Sketch.declare("' + cls + '"): ' + msg);
+		throw new Error('declare("' + cls + '"): ' + msg);
 	}
 
 	// C3 Method Resolution Order (see http://www.python.org/download/releases/2.3/mro/)

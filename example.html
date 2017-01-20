@@ -8,61 +8,146 @@
     margin: 0;
     padding: 0
   }
+  
+  body {
+    font-size: 14px;
+    line-height: 1.2
+  }
+
+  .page {
+    padding: 0 6%;
+    background: #f7f7f7;
+  }
+  
+  .subject {
+    line-height: 100%;
+    text-align: center;
+    margin: 20px 6% 15px
+  }
+  
+  .subject span,
+  .subject a {
+    line-height: 100%;
+    display: inline-block;
+    vertical-align: text-bottom
+  }
+  
+  .subject a {
+    font-size: 12px;
+    line-height: 100%;
+    margin: 0 10px
+  }
+  
+  .subject-detail {
+    margin: 0 6%;
+    padding: 12px 16px;
+    border-radius: 3px;
+    line-height: 1.5;
+    color: #666;
+  }
+
+  .subtitle {
+    margin: 30px 6% 10px
+  }
+  
+  .main {
+    margin: 0 2% 20px;
+    overflow: hidden
+  }
+  
+  .main pre,
+  .main div {
+    padding: 0 20px 20px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    max-height: 1600px;
+    overflow: auto
+  }
+  
+  .main pre {
+    float: left;
+    width: 60%;
+  }
+  
+  .main div {
+    float: right;
+    width: 35%;
+    line-height: 1.5
+  }
   </style>
-  <script src="declare.js"></script>
+  <script src="declare.min.js"></script>
 </head>
 
 <body>
+  <div class="page">
+    <h1 class="subject"><span>declare.js</span><a href="https://raw.githubusercontent.com/yessky/declare.js/master/declare.min.js" target="_blank">Download</a><a href="https://github.com/yessky/declare.js" target="_blank">GitHub</a></h1>
+    <p class="subject-detail"><a href="https://github.com/yessky/declare.js" target="_blank">declare.js</a>使得JavaScript具备了多继承的能力。基于 <a href="https://www.python.org/download/releases/2.3/mro/" target="_blank">C3 Method Resolution Order</a> 算法实现，支持单/多/深度继承；支持菱形继承错误提示；仅一个api简单易用，继承关系清晰易读；体积小巧minify后约3kb，gzip后约1kb大小；性能优秀，占用不到1毫秒cpu时间️。<a href="https://github.com/yessky/declare.js" target="_blank">declare.js</a>带你玩转JavaScript多继承。</p>
+    <h3 class="subtitle">用法示例</h3>
+    <div class="main">
+      <pre id="sample-code"></pre>
+      <div id="sample-result"></div>
+    </div>
+  </div>
   <script type="text/javascript">
+  var $ = function(id) {
+    return document.getElementById(id);
+  };
   var nativeLog = console.log;
+  var sourceResult = [];
   var aspectBeforeLog = function() {
-    alert(arguments[0])
+    var s = Array.prototype.slice.call(arguments);
+    s = s.join(' ');
+    if (s[0] === '>') {
+      sourceResult.push(' ');
+    }
+    sourceResult.push(s);
   };
   console.log = function() {
     aspectBeforeLog.apply(null, arguments);
     nativeLog.apply(this, arguments);
   };
-
+  </script>
+  <script type="text/javascript" id="sample-script">
   var X = declare('X', null, {
     constructor: function() {
       this.name = 'X';
-      console.log('X');
+      console.log('inherited X::constructor');
     },
-    protoName: 'X',
-    protoFn: function() {
-      console.log('X fn');
+    superName: 'X',
+    superFn: function() {
+      console.log('inherited X::superFn');
     }
   });
   var F = declare('F', [X], {
     constructor: function() {
       this.name = 'F';
-      console.log('F');
+      console.log('inherited F::constructor');
     },
-    protoName: 'F',
-    protoFn: function() {
+    superName: 'F',
+    superFn: function() {
       this.inherited(arguments);
-      console.log('F fn');
+      console.log('inherited F::superFn');
     },
-    protoF2: function() {
-      console.log('F protoF2');
+    superFn2: function() {
+      console.log('inherited F::superFn2');
     }
   });
   console.time('e')
   var E = declare('E', [X], {
     constructor: function() {
       this.name = 'E';
-      console.log('E');
+      console.log('inherited E::constructor');
     },
-    protoName: 'E'
+    superName: 'E'
   });
   console.timeEnd('e')
   console.time('d')
   var D = declare('D', [X], {
     constructor: function() {
       this.name = 'D';
-      console.log('D');
+      console.log('inherited D::constructor');
     },
-    protoName: 'D'
+    superName: 'D'
   });
   console.timeEnd('d')
   console.time('c')
@@ -71,19 +156,19 @@
       this.name = 'C';
       console.log('C');
     },
-    protoName: 'C'
+    superName: 'C'
   });
   console.timeEnd('c')
   console.time('b')
   var B = declare('B', [E, D], {
     constructor: function() {
       this.name = 'B';
-      console.log('B');
+      console.log('inherited B::constructor');
     },
-    protoName: 'B',
-    protoFn: function() {
+    superName: 'B',
+    superFn: function() {
       this.inherited(arguments);
-      console.log('B fn');
+      console.log('inherited B::superFn');
     }
   });
   console.timeEnd('b')
@@ -91,30 +176,65 @@
   var A = declare('A', [B, C], {
     constructor: function() {
       this.name = 'A';
-      console.log('A');
+      console.log('inherited A::constructor');
     },
-    protoName: 'A',
-    protoF2: function() {
+    superName: 'A',
+    superFn2: function() {
       this.inherited(arguments);
-      console.log('A protoF2');
+      console.log('inherited A::superFn2');
     }
   });
   console.timeEnd('a');
 
+  console.log('############ inherit constructor test')
+
+  console.log('>>>>>>>>>>>> x instance start')
   var x = X();
-  console.log('============ x instanced ============')
+  console.log('============ x instance end')
+  console.log('>>>>>>>>>>>> f instance start')
   var f = F();
-  console.log('============ f instanced ============')
+  console.log('============ f instance end')
+  console.log('>>>>>>>>>>>> d instance start')
   var d = D();
-  console.log('============ d instanced ============')
+  console.log('============ d instance end')
+  console.log('>>>>>>>>>>>> e instance start')
   var e = E();
-  console.log('============ e instanced ============')
+  console.log('============ e instance end')
+  console.log('>>>>>>>>>>>> c instance start')
   var c = C();
-  console.log('============ c instanced ============')
+  console.log('============ c instance end')
+  console.log('>>>>>>>>>>>> b instance start')
   var b = B();
-  console.log('============ b instanced ============')
+  console.log('============ b instance end')
+  console.log('>>>>>>>>>>>> a instance start')
   var a = A();
-  console.log('============ a instanced ============')
+  console.log('============ a instance end')
+
+  console.log(' ');
+  console.log('############ inherit method test')
+
+  console.log('>>>>>>>>>>>> call a::superFn');
+  a.superFn();
+
+  console.log('>>>>>>>>>>>> call b::superFn');
+  b.superFn();
+
+  console.log('>>>>>>>>>>>> call c::superFn');
+  c.superFn();
+
+  console.log('>>>>>>>>>>>> call a::superFn2');
+  a.superFn2();
+
+  console.log('>>>>>>>>>>>> call d::superFn2');
+  d.superFn2();
+
+  console.log('>>>>>>>>>>>> call x::superFn2');
+  x.superFn2();
+  </script>
+  <script type="text/javascript">
+  var sourceCode = $('sample-script').innerHTML;
+  $('sample-code').innerHTML = sourceCode;
+  $('sample-result').innerHTML = sourceResult.join('<br>');
   </script>
 </body>
 
