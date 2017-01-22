@@ -145,7 +145,7 @@
 		name = name || caller.nom;
 
 		if (!name) {
-			// toto: throw error
+			err('can not deduce a name to call inherited()', this[cname]);
 		}
 
 		meta = this.constructor[cmeta];
