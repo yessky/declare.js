@@ -5,8 +5,8 @@
 	var ops = op.toString;
 	var empty = {};
 	var xname = 'constructor';
-	var cname = 'clsname';
-	var cmeta = 'clsmeta';
+	var cname = 'typedef';
+	var cmeta = 'metadef';
 
 	function err(msg, cls) {
 		throw new Error('declare("' + cls + '"): ' + msg);
