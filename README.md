@@ -82,4 +82,11 @@ var A = declare('A', [B, C], {
   }
 });
 console.timeEnd('a');
+
+var a = A();
+var b = B();
+
+a.superFn2();
+a.superFn();
+b.superFn();
 ```
