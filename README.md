@@ -1,6 +1,6 @@
 # declare.js
 
-<a href="https://github.com/yessky/declare.js" target="_blank">declare.js</a>使得JavaScript具备了多继承的能力。基于 <a href="https://www.python.org/download/releases/2.3/mro/" target="_blank">C3 Method Resolution Order</a> 算法实现，支持单/多/深度继承；支持菱形继承错误提示；仅一个api简单易用，继承关系清晰易读；体积小巧minify后约3kb，gzip后约1kb大小；性能优秀，占用不到1毫秒cpu时间️。<a href="https://github.com/yessky/declare.js" target="_blank">declare.js</a>带你玩转JavaScript多继承。
+<a href="https://github.com/yessky/declare.js" target="_blank">declare.js</a>使得JavaScript具备了多继承的能力。基于 <a href="https://www.python.org/download/releases/2.3/mro/" target="_blank">C3 Method Resolution Order</a> 算法实现，支持单/多/深度继承；支持菱形继承错误提示；仅一个api简单易用，继承关系清晰易读；体积小巧minify后约3kb，gzip后约1kb大小；性能优秀，占用不到1毫秒cpu时间。<a href="https://github.com/yessky/declare.js" target="_blank">declare.js</a>带你玩转JavaScript多继承。
 
 # 用法示例
 
